@@ -25,9 +25,6 @@ cd A.U.R.A
 Install requirements:
 ```python
 pip install cryptography
-pip install time
-pip install os
-pip install ast
 ```
 Run the main script:
 ```python
