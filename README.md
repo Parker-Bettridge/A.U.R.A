@@ -23,13 +23,14 @@ cd A.U.R.A
 
 ```
 Install requirements:
-```bash
+```python
 pip install cryptography
 pip install time
 pip install os
+pip install ast
 ```
 Run the main script:
-```bash
+```python
 python MAIN.py
 ```
 ---
