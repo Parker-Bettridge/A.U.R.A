@@ -36,7 +36,7 @@ def load_data():
     return data["users"], data["passwords"], data["roles"]
 
 # ----- Commands -----
-admin_commands = ["Exit", "Help", "Create", "Delete"]
+admin_commands = ["Exit", "Help", "Create", "Delete", "Edit"]
 mod_commands = ["Exit", "Help"]
 guest_commands = ["Exit", "Help"]
 
@@ -69,6 +69,7 @@ def amdin_panel(user):
     print("║        Help - Displays This Menu          ║")
     print("║        Create - Creates User              ║")
     print("║        Delete - Deletes User              ║")
+    print("║        Edit - Edits User                  ║")
     print("║                                           ║")
     print("╚═══════════════════════════════════════════╝")
     time.sleep(3)
@@ -112,6 +113,7 @@ def create_user(user):
         new_user = input(user + " >>> ")
         if new_user not in users:
             users.append(new_user)
+            save_data(users, passwords, roles)
             break
         else:
             clear_screen()
@@ -131,6 +133,41 @@ def create_user(user):
     print("╚═══════════════════════════════════════════╝")
     new_user_password = input(user + " >>> ")
     passwords.append(new_user_password)
+    save_data(users, passwords, roles)
+
+    # --- Get valid role ---
+    valid_roles = ["Admin", "Moderator", "Guest"]
+    while True:
+        clear_screen()
+        panel_top()
+        print("║                                           ║")
+        print("║          What Is New User's Role?         ║")
+        print("║                                           ║")
+        print("╚═══════════════════════════════════════════╝")
+        new_user_role = input(user + " >>> ")
+        if new_user_role in valid_roles:
+            roles.append(new_user_role)
+            save_data(users, passwords, roles)
+            break
+        else:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║         Please Enter Valid Role           ║")
+            print("║  (Valid Roles: Admin, Moderator, Guest)   ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+
+    # --- Success message ---
+    clear_screen()
+    panel_top()
+    print("║                                           ║")
+    print("║     New User Was Successfully Created     ║")
+    print("║                                           ║")
+    print("╚═══════════════════════════════════════════╝")
+    time.sleep(3)
+    admin(user)
 
     # ---
 
@@ -150,7 +187,7 @@ def delete_user(user):
             clear_screen()
             panel_top()
             print("║                                           ║")
-            print("║   You Can't Delete Default Admin Account  ║")
+            print("║    You Can't Delete Default Admin User    ║")
             print("║                                           ║")
             print("╚═══════════════════════════════════════════╝")
             time.sleep(3)
@@ -161,6 +198,15 @@ def delete_user(user):
             del users[index_delete]
             del passwords[index_delete]
             del roles[index_delete]        
+            save_data(users, passwords, roles)
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       User Was Successfully Deleted       ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            admin(user)
 
     else:
         clear_screen()
@@ -171,6 +217,151 @@ def delete_user(user):
         print("╚═══════════════════════════════════════════╝")
         time.sleep(3)
         delete_user(user)
+
+def edit_user(user):
+    while True:
+        clear_screen()
+        panel_top()
+        print("║                                           ║")
+        print("║       What User Do You Want To Edit?      ║")
+        print("║                                           ║")
+        print("╚═══════════════════════════════════════════╝")
+        edit = input(user + " >>> ")
+
+        if edit == "Admin":
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║  The Default Admin User Can't Be Edited   ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            continue  # go back to asking for a username
+
+        if edit in users:
+            index_edit = users.index(edit)
+            edit_user_action(user, index_edit)
+            break  # exit the loop after editing
+        else:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       Please Enter A Valid UserName       ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+
+
+def edit_user_action(user, index):
+    while True:
+        valid_options = ["UserName", "PassWord", "Role", "Exit"]
+
+        clear_screen()
+        panel_top()
+        print("║                                           ║")
+        print("║         What Do You Want To Edit?         ║")
+        print("║           Or Type Exit To Leave           ║")
+        print("║                                           ║")
+        print("╚═══════════════════════════════════════════╝")
+        edit_action = input(user + " >>> ")
+
+        if edit_action in valid_options:
+            break
+        else:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║        Please Enter A Valid Option        ║")
+            print("║ (Valid Options: UserName, PassWord, Role) ║")
+            print("║           Or Type Exit To Leave           ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+
+    if edit_action == 'Exit':
+        admin(user)
+        
+    if edit_action == 'UserName':
+        while True:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║      What Is The User's New UserName?     ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            new_userName = input(user + " >>> ")
+
+            if new_userName not in users:
+                users[index] = new_userName
+                save_data(users, passwords, roles)
+                clear_screen()
+                panel_top()
+                print("║                                           ║")
+                print("║     UserName Was Successfully Changed     ║")
+                print("║                                           ║")
+                print("╚═══════════════════════════════════════════╝")
+                time.sleep(3)
+                edit_user_action(user, index)
+            else:
+                clear_screen()
+                panel_top()
+                print("║                                           ║")
+                print("║ Please Enter A UserName That Isn't In Use ║")
+                print("║                                           ║")
+                print("╚═══════════════════════════════════════════╝")
+                time.sleep(3)
+
+    if edit_action == 'PassWord':
+        while True:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║      What Is The User's New PassWord?     ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            new_user_password = input(user + " >>> ")
+
+            passwords[index] = new_user_password
+            save_data(users, passwords, roles)
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║     PassWord Was Successfully Changed     ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            edit_user_action(user, index)
+        
+    # --- Get valid role ---
+    valid_roles = ["Admin", "Moderator", "Guest"]
+    while True:
+        clear_screen()
+        panel_top()
+        print("║                                           ║")
+        print("║          What Is User's New Role?         ║")
+        print("║                                           ║")
+        print("╚═══════════════════════════════════════════╝")
+        uses_role = input(user + " >>> ")
+        if uses_role in valid_roles:
+            roles[index] = uses_role
+            save_data(users, passwords, roles)
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       Role Was Successfully Changed       ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            edit_user_action(user, index)
+        else:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║         Please Enter Valid Role           ║")
+            print("║  (Valid Roles: Admin, Moderator, Guest)   ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
 
 # ----- Login and Role Checking -----
 def password_check(expected_password, username, index_user):
@@ -199,23 +390,59 @@ def select_user():
     panel_top()
     print("║                                           ║")
     print("║          Please Enter UserName:           ║")
+    print("║          Or Type Exit To Leave            ║")
     print("║                                           ║")
     print("╚═══════════════════════════════════════════╝")
     user = input(">>> ")
 
-    try:
-        user_index = users.index(user)
-        expected_password = passwords[user_index]
-        password_check(expected_password, user, user_index)
-    except ValueError:
-        clear_screen()
-        panel_top()
-        print("║                                           ║")
-        print("║       Please Enter A Valid UserName       ║")
-        print("║                                           ║")
-        print("╚═══════════════════════════════════════════╝")
-        time.sleep(3)        
-        select_user()
+    if user == 'Exit':
+        current_time = time.localtime()
+        current_hour = current_time.tm_hour
+        current_minute = current_time.tm_min
+
+        # Convert current time to minutes since midnight
+        current_minutes = current_hour * 60 + current_minute
+
+        # Define open and closed times in minutes
+        open_start = 6 * 60       # 06:00
+        open_end = 18 * 60        # 18:00
+
+        # Check if current time is within open or closed hours
+        if open_start <= current_minutes < open_end:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       GoodBye, Have An Amazing Day        ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            os._exit(0)
+
+        else:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       GoodBye, Have An Amazing Night      ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)
+            os._exit(0)
+
+
+    if user != 'Exit':
+        try:
+            user_index = users.index(user)
+            expected_password = passwords[user_index]
+            password_check(expected_password, user, user_index)
+        except ValueError:
+            clear_screen()
+            panel_top()
+            print("║                                           ║")
+            print("║       Please Enter A Valid UserName       ║")
+            print("║                                           ║")
+            print("╚═══════════════════════════════════════════╝")
+            time.sleep(3)        
+            select_user()
 
 def role_check(username_action, index):
     try:
@@ -263,6 +490,8 @@ def admin(admin_user):
         if admin_action == 'Delete':
             delete_user(admin_user)
 
+        if admin_action == 'Edit':
+            edit_user(admin_user)
 
     else:
         clear_screen()
