@@ -22,6 +22,10 @@ git clone https://github.com/Parker-Bettridge/A.U.R.A.git
 cd A.U.R.A
 
 ```
+Install requirements:
+```bash
+pip install cryptography
+```
 Run the main script:
 ```bash
 python MAIN.py
