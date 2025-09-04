@@ -111,6 +111,8 @@ def create_user(user):
         print("║                                           ║")
         print("╚═══════════════════════════════════════════╝")
         new_user = input(user + " >>> ")
+        if new_user == 'Exit':
+            admin(user)
         if new_user not in users:
             users.append(new_user)
             save_data(users, passwords, roles)
@@ -132,6 +134,8 @@ def create_user(user):
     print("║                                           ║")
     print("╚═══════════════════════════════════════════╝")
     new_user_password = input(user + " >>> ")
+    if new_user_password == 'Exit':
+        admin(user)
     passwords.append(new_user_password)
     save_data(users, passwords, roles)
 
@@ -145,6 +149,8 @@ def create_user(user):
         print("║                                           ║")
         print("╚═══════════════════════════════════════════╝")
         new_user_role = input(user + " >>> ")
+        if new_user_role == 'Exit':
+            admin(user)        
         if new_user_role in valid_roles:
             roles.append(new_user_role)
             save_data(users, passwords, roles)
@@ -179,6 +185,9 @@ def delete_user(user):
     print("║                                           ║")
     print("╚═══════════════════════════════════════════╝")
     selete = input(user + " >>> ")
+        
+    if selete == 'Exit':
+        admin(user)
         
     if selete in users:
         index_delete = users.index(selete)
@@ -228,6 +237,9 @@ def edit_user(user):
         print("╚═══════════════════════════════════════════╝")
         edit = input(user + " >>> ")
 
+        if edit == 'Exit':
+            admin(user)
+
         if edit == "Admin":
             clear_screen()
             panel_top()
@@ -260,10 +272,12 @@ def edit_user_action(user, index):
         panel_top()
         print("║                                           ║")
         print("║         What Do You Want To Edit?         ║")
-        print("║           Or Type Exit To Leave           ║")
         print("║                                           ║")
         print("╚═══════════════════════════════════════════╝")
         edit_action = input(user + " >>> ")
+
+        if edit_action == 'Exit':
+            admin(user)
 
         if edit_action in valid_options:
             break
@@ -290,6 +304,9 @@ def edit_user_action(user, index):
             print("║                                           ║")
             print("╚═══════════════════════════════════════════╝")
             new_userName = input(user + " >>> ")
+
+            if new_userName == 'Exit':
+                admin(user)
 
             if new_userName not in users:
                 users[index] = new_userName
@@ -321,6 +338,9 @@ def edit_user_action(user, index):
             print("╚═══════════════════════════════════════════╝")
             new_user_password = input(user + " >>> ")
 
+            if new_user_password == 'Exit':
+                admin(user)
+
             passwords[index] = new_user_password
             save_data(users, passwords, roles)
             clear_screen()
@@ -342,6 +362,10 @@ def edit_user_action(user, index):
         print("║                                           ║")
         print("╚═══════════════════════════════════════════╝")
         uses_role = input(user + " >>> ")
+
+        if new_user_password == 'Exit':
+            admin(user)
+
         if uses_role in valid_roles:
             roles[index] = uses_role
             save_data(users, passwords, roles)
@@ -390,7 +414,6 @@ def select_user():
     panel_top()
     print("║                                           ║")
     print("║          Please Enter UserName:           ║")
-    print("║          Or Type Exit To Leave            ║")
     print("║                                           ║")
     print("╚═══════════════════════════════════════════╝")
     user = input(">>> ")
